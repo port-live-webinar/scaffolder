@@ -21,9 +21,9 @@ jobs:
           access_token=$(curl --location --request POST 'https://api.getport.io/v1/auth/access_token' \
           --header 'Content-Type: application/json' \
           --data-raw '{
-              "clientId": "CLIENT_ID",
-              "clientSecret": "CLIENT_SECRET"
-          }' | jq '.accessToken' | sed 's/"//g')
+              "clientId": "${{ secrets.CLIENT_ID }}",
+              "clientSecret": "${{ secrets.CLIENT_SECRETS }}"
+          }' | jq '.accessToken' | sed 's/"//g')        
           curl --location "https://api.getport.io/v1/actions/runs/${{ fromJson(inputs.port_payload).context.runId }}/logs" \
           --header "Authorization: Bearer $access_token" \
           --header "Content-Type: application/json" \
