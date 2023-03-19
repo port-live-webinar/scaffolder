@@ -25,7 +25,7 @@ jobs:
           identifier: ${{ fromJson(inputs.port_payload).payload.properties.name }}
           title: ${{ fromJson(inputs.port_payload).payload.properties.name }}
           blueprint: microservice
-          run_id:  ${{ fromJson(inputs.port_payload).context.runId }}
+          runId:  ${{ fromJson(inputs.port_payload).context.runId }}
           properties: |
             {
               "description": "${{ fromJson(inputs.port_payload).payload.properties.description }}"
