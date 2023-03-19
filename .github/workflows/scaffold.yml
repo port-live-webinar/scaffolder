@@ -8,6 +8,10 @@ on:
     secrets: 
       ORG_TOKEN: 
         required: true
+      CLIENT_ID:
+        required: true
+      CLIENT_SECRET:
+        required: true
 jobs: 
   scaffold:
     runs-on: ubuntu-latest
