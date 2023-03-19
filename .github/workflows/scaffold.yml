@@ -21,4 +21,3 @@ jobs:
           repoDescription: ${{ fromJson(inputs.port_payload).payload.properties.description }}
           repoVisibility: 'private'
           securityToken: ${{ secrets.ORG_TOKEN }}
-          envsToRepoSecrets: ORG_TOKEN
