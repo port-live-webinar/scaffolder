@@ -13,6 +13,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: port-labs/port-github-action@v1
+        with:
+          clientId: ${{ secrets.CLIENT_ID }}
+          clientSecret: ${{ secrets.CLIENT_SECRET }}
+          operation: UPSERT
+          identifier: ${{ fromJson(inputs.port_payload).payload.properties.name }}
+          title: ${{ fromJson(inputs.port_payload).payload.properties.name }}
+          blueprint: microservice
+          run_id:  ${{ fromJson(inputs.port_payload).context.runId }}
+          properties: |
+            {
+              "description": "${{ fromJson(inputs.port_payload).payload.properties.description }}"
+            }
+          team: '["${{ fromJson(inputs.port_payload).payload.properties.team }}"]'
       - uses: howlowck/create-repo-action@v1.0
         with:
           zipPath: './src.zip'
