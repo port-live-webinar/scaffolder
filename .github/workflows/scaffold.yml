@@ -16,7 +16,6 @@ jobs:
   scaffold:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
       - run: |
           access_token=$(curl --location --request POST 'https://api.getport.io/v1/auth/access_token' \
           --header 'Content-Type: application/json' \
@@ -30,18 +29,14 @@ jobs:
           --data "{
             \"message\": \"🚀 Scaffolding a new repository: ${{ fromJson(inputs.port_payload).payload.properties.name }}  \"
           }"
+          sleep 5
           curl --location "https://api.getport.io/v1/actions/runs/${{ fromJson(inputs.port_payload).context.runId }}/logs" \
           --header "Authorization: Bearer $access_token" \
           --header "Content-Type: application/json" \
           --data "{
             \"message\": \"🔑 Setting permissions for repository: ${{ fromJson(inputs.port_payload).payload.properties.name }}  \"
           }"
-          curl --location "https://api.getport.io/v1/actions/runs/${{ fromJson(inputs.port_payload).context.runId }}/logs" \
-          --header "Authorization: Bearer $access_token" \
-          --header "Content-Type: application/json" \
-          --data "{
-            \"message\": \"✅ Setting permissions for repository: ${{ fromJson(inputs.port_payload).payload.properties.name }}  \"
-          }"
+      - uses: actions/checkout@v3
       - uses: port-labs/port-github-action@v1
         with:
           clientId: ${{ secrets.CLIENT_ID }}
@@ -64,3 +59,16 @@ jobs:
           repoDescription: ${{ fromJson(inputs.port_payload).payload.properties.description }}
           repoVisibility: 'private'
           securityToken: ${{ secrets.ORG_TOKEN }}
+      - run: |
+          access_token=$(curl --location --request POST 'https://api.getport.io/v1/auth/access_token' \
+          --header 'Content-Type: application/json' \
+          --data-raw '{
+              "clientId": "${{ secrets.CLIENT_ID }}",
+              "clientSecret": "${{ secrets.CLIENT_SECRET }}"
+          }' | jq '.accessToken' | sed 's/"//g')        
+          curl --location "https://api.getport.io/v1/actions/runs/${{ fromJson(inputs.port_payload).context.runId }}/logs" \
+          --header "Authorization: Bearer $access_token" \
+          --header "Content-Type: application/json" \
+          --data "{
+            \"message\": \"✅ Done scaffolding repository: ${{ fromJson(inputs.port_payload).payload.properties.name }}  \"
+          }"          
