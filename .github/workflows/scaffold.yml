@@ -1,0 +1,23 @@
+on:
+  workflow_dispatch:
+    inputs:
+      port_payload:
+        required: true
+        description: "Port's payload, including details for who triggered the action and general context (blueprint, run id, etc...)"
+        type: string
+    secrets: 
+        required: true
+      ORG_TOKEN: 
+        required: true
+runs-on: ubuntu-latest
+steps:
+  - uses: actions/checkout@v3
+  - uses: howlowck/create-repo@v1.0
+    with:
+      zipPath: './src.zip'
+      repoOrg: 'port-live-webinar'
+      repoName: ${{ fromJson(inputs.port_payload).payload.properties.name }}
+      repoDescription: ${{ fromJson(inputs.port_payload).payload.properties.description }}
+      repoVisibility: 'private'
+      securityToken: ${{ secrets.ORG_TOKEN }}
+      envsToRepoSecrets: ORG_TOKEN
