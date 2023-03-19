@@ -28,7 +28,19 @@ jobs:
           --header "Authorization: Bearer $access_token" \
           --header "Content-Type: application/json" \
           --data "{
-            \"message\": \"Scaffolding a new repository: ${{ fromJson(inputs.port_payload).payload.properties.name }}\"
+            \"message\": \"🚀 Scaffolding a new repository: ${{ fromJson(inputs.port_payload).payload.properties.name }}  \"
+          }"
+          curl --location "https://api.getport.io/v1/actions/runs/${{ fromJson(inputs.port_payload).context.runId }}/logs" \
+          --header "Authorization: Bearer $access_token" \
+          --header "Content-Type: application/json" \
+          --data "{
+            \"message\": \"🔑 Setting permissions for repository: ${{ fromJson(inputs.port_payload).payload.properties.name }}  \"
+          }"
+          curl --location "https://api.getport.io/v1/actions/runs/${{ fromJson(inputs.port_payload).context.runId }}/logs" \
+          --header "Authorization: Bearer $access_token" \
+          --header "Content-Type: application/json" \
+          --data "{
+            \"message\": \"✅ Setting permissions for repository: ${{ fromJson(inputs.port_payload).payload.properties.name }}  \"
           }"
       - uses: port-labs/port-github-action@v1
         with:
