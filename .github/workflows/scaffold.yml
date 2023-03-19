@@ -22,7 +22,7 @@ jobs:
           --header 'Content-Type: application/json' \
           --data-raw '{
               "clientId": "${{ secrets.CLIENT_ID }}",
-              "clientSecret": "${{ secrets.CLIENT_SECRETS }}"
+              "clientSecret": "${{ secrets.CLIENT_SECRET }}"
           }' | jq '.accessToken' | sed 's/"//g')        
           curl --location "https://api.getport.io/v1/actions/runs/${{ fromJson(inputs.port_payload).context.runId }}/logs" \
           --header "Authorization: Bearer $access_token" \
