@@ -17,6 +17,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - run: |
+          access_token=$(curl --location --request POST 'https://api.getport.io/v1/auth/access_token' \
+          --header 'Content-Type: application/json' \
+          --data-raw '{
+              "clientId": "CLIENT_ID",
+              "clientSecret": "CLIENT_SECRET"
+          }' | jq '.accessToken' | sed 's/"//g')
+          curl --location "https://api.getport.io/v1/actions/runs/${{ fromJson(inputs.port_payload).context.runId }}/logs" \
+          --header "Authorization: Bearer $access_token" \
+          --header "Content-Type: application/json" \
+          --data "{
+            \"message\": \"Scaffolding a new repository: ${{ fromJson(inputs.port_payload).payload.properties.name }}\"
+          }"
       - uses: port-labs/port-github-action@v1
         with:
           clientId: ${{ secrets.CLIENT_ID }}
