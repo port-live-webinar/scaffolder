@@ -1,3 +1,5 @@
+name: Scaffold new service repository from Cookiecutter
+
 on:
   workflow_dispatch:
     inputs:
